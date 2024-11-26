@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person DOB datails</title>
+   <!-- font awesome cdn -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+     <!-- bootstrap cdn link for css -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+.container {
+    background: rgba( 255, 255, 255, 0.25 );
+    padding:30px 20px;
+    width: 700px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+   border-radius: 10px;
+}
+      body {
+   background:radial-gradient(circle, rgba(35, 5, 49, 0) 12%, rgba(198,136,233,1) 100%);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+   margin: 0;
+}
+input[type="text"],
+input[type="date"] {
+   width: 99%;
+   border: none;
+   border-bottom: 1px solid black;
+   padding: 10px;
+   margin: 10px 0 0;   
+  background: transparent;
+}
+
+  
+h1 {
+   text-align: center;
+   color: #333;
+   margin-bottom: 30px;
+}
+
+button{
+   width: 100%;
+   padding: 10px;
+   margin-top: 20px;
+   background-color:#7b4abc ;
+   border: none;
+   border-radius: 4px;
+   color: white;
+   font-size: 16px;
+   cursor: pointer;
+   transition: background-color 0.3s;
+} 
+button:hover{
+    background-color:#6d35b7 ;
+}
+        input[type="text"]:focus,input[type="date"]:focus{
+            outline: none;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+  
+
+    <div class="container">
+        <h1>Never miss a Birthday again &#129395;</h1>
+        <form>      
+    <input id="name" type="text" placeholder="Name">
+    <input id="date" type="datetime-local" placeholder="Birthday Date">
+    <button id="btn">Save</button>    
+        </form>
+    </div>
+
+    <script>  
+     const existingData = JSON.parse(localStorage.getItem("birthday")) || [];
+        // Getting elements from body
+ 
+        const saveBtn = document.getElementById("btn");      
+        const nameInput = document.getElementById("name");
+        const dateInput = document.getElementById("date");
+
+        // Get the index of the card which we want to edit
+        const editIndex = localStorage.getItem("editIndex");
+
+         if (editIndex !== null) {
+            const cardToEdit = existingData[editIndex];
+             if (cardToEdit) {
+                nameInput.value = cardToEdit.username;
+                dateInput.value = cardToEdit.dob;
+             }
+         }
+        
+        //adding eventlistener() to the save btn
+           saveBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Storing input values in variables
+            const username = nameInput.value.trim();
+            const bdyDate = dateInput.value;
+
+        
+
+            // Checking if both inputs are filled or not
+            if (username && bdyDate) {
+                let obj = {
+                username:username,
+                dob:bdyDate,
+                }
+           
+                if (editIndex !== null) {
+                
+                    // Updating the card data
+                    existingData[editIndex] = obj;
+                }
+                    else{
+
+                    existingData.push(obj)
+                    }
+                
+         
+                  localStorage.setItem("birthday",JSON.stringify(existingData));
+                  localStorage.removeItem("editIndex"); // Clears edit index from localstorage after editing the card
+
+             //Clear input fields after adding to the card
+                nameInput.value = '';
+                dateInput.value = '';
+
+                //redirecting to cards.html
+                window.location.href = "./cards.html";
+            } else {
+                 alert("Please fill in both input fields.");
+             
+            }
+
+        });
+    
+    </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+<!-- 
+// Checking if both inputs are filled
+// if (username && bdyDate) {
+//     const card = document.createElement("div");
+//     card.innerHTML = `${username}<br>${bdyDate}`; // Format date
+//     card.setAttribute("id", "card");
+
+//     //creating a div for buttons
+//     let buttonDiv = document.createElement("div");
+//      buttonDiv.setAttribute("id","buttons-div")
+
+//     // Creating Edit  button
+//     const editBtn = document.createElement("button");
+//     editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+//     editBtn.setAttribute("id","edit")
+//     editBtn.addEventListener("click", function() {
+//         nameInput.value = username; // Setting input values for editing
+//         dateInput.value = bdyDate;
+//         cardsContainer.removeChild(card); // Remove card for editing
+//     });
+
+
+//     // Creating delete button
+//     const deleteBtn = document.createElement("button");
+//     deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
+//     deleteBtn.setAttribute("id","delete")
+//     deleteBtn.addEventListener("click", function() {
+//         cardsContainer.removeChild(card); // Remove card
+//     });
+
+//     buttonDiv.append(deleteBtn,editBtn)
+
+//     card.appendChild(buttonDiv);
+   
+//     cardsContainer.appendChild(card);
+
+//     // Clear input fields after adding to the card
+//     nameInput.value = '';
+//     dateInput.value = '';
+// } else {
+//     alert("Please fill in both fields.");
+// } -->

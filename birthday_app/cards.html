@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>birthday cards</title>
+      <!-- font awesome cdn -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+       <!-- bootstrap cdn link for css -->
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            padding: 20px;
+        }
+         #cards-container{
+            /* border: solid; */
+            padding: 10px;
+          
+        }
+        .card{
+            /* border: solid; */
+            margin: 15px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-style: italic;
+             display:flex;
+             flex-direction: row;
+            justify-content: space-between; 
+            border-radius: 25px;
+            /* background-color: lavender; */
+            box-shadow: 0px 0px 7px .2px darkslateblue;
+            background: linear-gradient(90deg, rgb(170, 116, 206) 42%, rgb(241, 238, 238) 90%);
+        }
+        .fa-trash{
+            color: red;
+            font-size: 30px;
+        }
+        .fa-pen-to-square{
+            color: blue;
+            font-size: 30px;
+        }
+    
+        #edit,#delete{
+            font-size: 1.4rem;
+            padding: 20px;
+            border: none;
+            background:none;
+          /* border: solid; */
+       
+        }
+        .fa-plus{
+            font-size: 3rem;           
+        }
+        #add-bdy{
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+           background-color:lavenderblush;
+            margin-top: 20%;    
+            position: fixed;   
+            top:45%;
+            left: 50%;
+            z-index: 1;
+        }
+      
+
+#add-bdy:hover {
+    background-color: rgb(171, 109, 211) ; /* Optional: change color on hover */
+}
+
+    </style>
+</head>
+<body>
+    <!-- <h1>cards</h1> -->
+  
+    <div id="cards-container"></div>
+    <!-- add button -->
+    <div class="d-flex justify-content-center" >
+    <button id="add-bdy" ><i class="fa-solid fa-plus"></i></button>
+</div>
+    
+    <script>
+        const addBtn = document.getElementById("add-bdy") 
+        const cardsContainer = document.getElementById("cards-container")    
+      const  userData = JSON.parse(localStorage.getItem("birthday")) || [];
+    //   console.log(userData )
+
+       // Sort userData by date of birth
+       userData.sort((a, b) => new Date(a.dob) - new Date(b.dob));
+   
+    userData.forEach((item,index) => {
+     createCard(item.username,item.dob,index);
+    });
+
+
+    addBtn.addEventListener("click",function(e){
+    e.preventDefault();
+    window.location.href = "./form.html"
+})
+
+function createCard(username,dob,index){
+   const card = document.createElement("div");
+   card.setAttribute("class", "card");
+
+      //name and date div
+  const   infoDiv = document.createElement("div")
+  infoDiv.innerHTML = ` ${username}<br> ${dob}`;
+  infoDiv.setAttribute ("id","info-div")
+
+ // adding eventlistener() to the card to redirect to countdown page
+ card.addEventListener("click", function (e) {
+    e.preventDefault();
+    localStorage.setItem("selectedIndex", index); // Stores selected card index
+        window.location.href = `countdown.html`; 
+    });
+
+     //creating a div for buttons
+     let buttonDiv = document.createElement("div");
+    buttonDiv.setAttribute("id","buttons-div");
+
+
+
+      // Creating Edit  button
+      const editBtn = document.createElement("button");
+      editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+      editBtn.setAttribute("id","edit")
+ 
+     editBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        // console.log("clicked edit")
+        e.stopPropagation(); // Prevents the card from  click event when we click on edit button
+        localStorage.setItem("editIndex",index);    // Store the index of the item being edited
+        
+      window.location.href = "./form.html";
+               
+     });
+
+      // Creating delete button
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i> `;
+     deleteBtn.setAttribute("id","delete")
+
+
+     deleteBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        // console.log("clicked delete")
+         e.stopPropagation(); // Prevent the card click event
+     userData.splice(index, 1);
+     
+     localStorage.setItem("birthday", JSON.stringify(userData));
+
+    cardsContainer.removeChild(card); // Remove card
+ 
+ });
+
+ buttonDiv.append(deleteBtn,editBtn)
+
+card.append(infoDiv,buttonDiv);
+
+cardsContainer.appendChild(card);
+      
+}
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

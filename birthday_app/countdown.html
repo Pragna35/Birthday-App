@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Countdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body{ 
+  padding:3rem;
+/* background-color: LightGray; */
+
+}
+
+        #countdown {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        #name {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .timer{
+            /* border: solid; */
+    margin:auto;
+    align-items:center;
+    display:flex;
+    justify-content:space-evenly;
+  }
+  .time-labels{
+    /* border: solid; */
+  width:16%;
+  text-align:center;
+  font-size:1.6rem;
+  color:black;
+  
+}
+        .timer-boxes {
+            /* border:5px solid black; */
+  box-shadow:5px 5px  10px  .5px lavenderblush;
+  color:LightGray;
+  width:100%;
+  margin:.6rem;
+  border-radius:.6rem;
+  background:linear-gradient(230deg, rgb(67, 18, 100) 42%, rgb(179, 110, 206) 90%);
+  height:12rem;
+  align-items:center;
+  justify-content:center;
+  display:flex;
+  font-size:6rem;
+}
+    </style>
+</head>
+<body>
+
+    <div id="name"></div>
+ 
+        <div class="timer" >
+    
+            <div class="time-labels">
+         <div class="timer-boxes" id="days">0</div>
+              <p> Days</P>
+       
+         </div>
+     
+       <div class="time-labels" >
+         <div class="timer-boxes" id="hours">0</div>
+              <p>Hours</P>
+       
+         </div>
+     <div class="time-labels">
+         <div class="timer-boxes" id="minutes">0</div>
+              <p>Minutes</P>
+       
+         </div>
+     
+     <div class="time-labels" >
+         <div class="timer-boxes" id="seconds">0</div>
+              <p>Seconds</P>
+       
+         </div>
+     
+        </div>
+  
+
+
+    <script>
+        const daysDiv = document.getElementById("days");
+        const hoursDiv = document.getElementById("hours");
+        const minutesDiv = document.getElementById("minutes");
+        const secondsDiv = document.getElementById("seconds");
+
+
+        const userData = JSON.parse(localStorage.getItem("birthday")) || [];
+        const index = localStorage.getItem("selectedIndex");
+
+        if (index !== null) {
+            const birthdayData = userData[index];
+            const nameDiv = document.getElementById("name");
+            const countdownDiv = document.getElementById("countdown");
+
+            nameDiv.innerHTML = `Countdown to ${birthdayData.username}'s Birthday!`;
+
+            function updateCountdown() {
+                const today = new Date();
+                const nextBirthday = new Date(birthdayData.dob);
+                nextBirthday.setFullYear(today.getFullYear());
+
+                // If the birthday has already passed this year, move to next year
+                if (today > nextBirthday) {
+                    nextBirthday.setFullYear(today.getFullYear() + 1);
+                }
+
+                const timeDiff = nextBirthday - today;
+
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                //countdownDiv.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                daysDiv.innerHTML = `${days}`;
+                hoursDiv.innerHTML = `${hours}`;
+                minutesDiv.innerHTML = `${minutes}`;
+                secondsDiv.innerHTML = `${seconds}`
+
+                    // Check if countdown has reached zero
+                    if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+                    // alert(`🎉 Happy Birthday, ${birthdayData.username}! 🎉`);
+                    window.location.href = "./cupcake.html"
+                    clearInterval(countdownInterval); // Stop the countdown
+                }
+
+             
+            }
+             // Update the countdown every second
+             const countdownInterval = setInterval(updateCountdown, 1000);
+
+            updateCountdown();
+        } else {
+            document.getElementById("name").textContent = "No birthday selected.";
+        
+        }
+    </script>
+
+</body>
+</html>
+
+
+
