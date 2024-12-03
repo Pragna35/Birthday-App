@@ -130,15 +130,13 @@
                     // alert(`🎉 Happy Birthday, ${birthdayData.username}! 🎉`);
                     window.location.href = "./cupcake.html"
                     clearInterval(countdownInterval); // Stop the countdown
-                }
-
-             
+                }             
             }
              // Update the countdown every second
              const countdownInterval = setInterval(updateCountdown, 1000);
-
             updateCountdown();
         } else {
+
             document.getElementById("name").textContent = "No birthday selected.";
         
         }
