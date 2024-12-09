@@ -62,7 +62,7 @@ button{
 button:hover{
     background-color:#6d35b7 ;
 }
-        input[type="text"]:focus,input[type="date"]:focus{
+        input[type="text"]:focus,input[type="datetime-local"]:focus{
             outline: none;
             background: transparent;
         }
@@ -76,7 +76,7 @@ button:hover{
         <h1>Never miss a Birthday again &#129395;</h1>
         <form>      
     <input id="name" type="text" placeholder="Name">
-    <input id="date" type="datetime-local" placeholder="Birthday Date">
+    <input id="date" type="date" placeholder="Birthday Date">
     <button id="btn">Save</button>    
         </form>
     </div>
@@ -143,7 +143,9 @@ button:hover{
             }
 
         });
-    
+        //to clear the locarstorage data
+        
+        // localStorage.clear();
     </script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
