@@ -92,19 +92,20 @@
         const addBtn = document.getElementById("add-bdy") 
         const cardsContainer = document.getElementById("cards-container")    
       const  userData = JSON.parse(localStorage.getItem("birthday")) || [];
-    //   console.log(userData )
+      console.log(userData )
 
        // Sort userData by date of birth
-       userData.sort((a, b) => new Date(a.dob) - new Date(b.dob));
+        userData.sort((a, b) => new Date(a.dob) - new Date(b.dob));
    
     userData.forEach((item,index) => {
+       // console.log(item)
      createCard(item.username,item.dob,index);
     });
 
 
     addBtn.addEventListener("click",function(e){
     e.preventDefault();
-    window.location.href = "./form.html"
+    window.location.href = "../index.html"
 })
 
 function createCard(username,dob,index){
@@ -140,7 +141,7 @@ function createCard(username,dob,index){
         e.stopPropagation(); // Prevents the card from  click event when we click on edit button
         localStorage.setItem("editIndex",index);    // Store the index of the item being edited
         
-      window.location.href = "./form.html";
+      window.location.href = "../index.html";
                
      });
 
